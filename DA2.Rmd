@@ -1,0 +1,71 @@
+---
+title: "CSE3020 DA2"
+author: "Anish Sarkar"
+date: "12/04/2022"
+output: html_document
+---
+
+```{r}
+mul_data <- read.csv("seattle-weather.csv")
+mul_data <- na.omit(mul_data)
+head(mul_data)
+str(mul_data)
+summary(mul_data)
+```
+
+```{r}
+library(lattice)
+splom(mul_data[2:5], main = "Weather")
+```
+
+
+```{r}
+parallelplot(mul_data[2:5], main = "Parallel Plot")
+```
+
+```{r}
+levelplot(temp_min~wind*precipitation,
+          data=mul_data,
+          main="Levelplot")
+levelplot(wind~temp_max*temp_min,
+          data=mul_data,
+          main="Levelplot")
+levelplot(precipitation~wind*temp_min,
+          data=mul_data,
+          main="Levelplot")
+levelplot(precipitation~temp_max*wind,
+          data=mul_data,
+          main="Levelplot")
+```
+
+
+```{r}
+library(ggplot2)
+ggplot(mul_data, aes(y = temp_max, x = temp_min, size=precipitation, col=wind, shape = weather)) + 
+  geom_point(alpha=.6) + labs(title = "Weather Analysis") +
+  theme_minimal()
+```
+
+
+```{r}
+cloud(wind~temp_max*precipitation|weather,
+      data = mul_data,
+      main = "3D scatter plot",
+      )
+```
+
+
+```{r}
+library(ggcorrplot)
+ggcorrplot(cor(mul_data[2:5])) + labs(title = "Correlation Matrix")
+```
+
+
+```{r}
+ggplot(mul_data, aes(x = wind)) +
+  geom_histogram(color = "white", fill = "cornflowerblue") +
+  facet_grid(vars(weather)) +
+  labs(title = "Weather Analysis",
+       x = "Wind")
+```
+
